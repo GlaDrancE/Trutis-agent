@@ -28,7 +28,6 @@ export const Login = () => {
     e.preventDefault();
     try {
 
-
       const response = await loginAgent(email, password)
       console.log(response)
       if (response.status !== 200) {

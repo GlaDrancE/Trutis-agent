@@ -1,12 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { UserCheck } from 'lucide-react';
 import { BottomNav } from '../components/BottomNav';
-import { searchClient, verifyClient } from '../../../services/api'
+import { searchClient, linkQRCode } from '../../../services/api'
 import axios from 'axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import toast from 'react-hot-toast'
+import { jwtDecode } from 'jwt-decode';
+
+const getAgentIdFromToken = () => {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+
+  try {
+    const decoded: any = jwtDecode(token);
+    return decoded.id;
+  } catch (error) {
+    console.error("Invalid token:", error);
+    return null;
+  }
+};
+
 
 export const VerifyClient = () => {
   const [clientId, setClientId] = useState('');
+  const [QRId, setQRId] = useState('');
   const [clientDetails, setClientDetails] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [searchParams, _setSearchParams] = useSearchParams();
@@ -17,30 +34,58 @@ export const VerifyClient = () => {
     const public_key = searchParams.get('c');
     setClientId(public_key as string)
   }, [])
+
   const handleSearch = async () => {
     setLoading(true);
-    // Simulated API call - replace with actual endpoint
+
     navigate(`/verify?c=${clientId}`)
     try {
       const response = await searchClient(clientId);
       setClientDetails(response.data);
     } catch (error) {
+      toast.error("Client not found");
       console.error('Error fetching client details:', error);
     }
     setLoading(false);
   };
 
-  const handleVerify = async () => {
+  const handleQRCode = async () => {
+    if (!QRId) {
+      toast.error("Please enter a valid QR ID");
+      return;
+    }
+
+    const agentId = getAgentIdFromToken();
+    if (!agentId) {
+      toast.error("Agent authentication failed");
+      return;
+    }
+
     try {
-      const response = await verifyClient(clientId);
-      if (!response.data) {
-        console.log("Private key not found")
+      const response = await linkQRCode(clientId, QRId, agentId);
+
+      if (response.status === 200) {
+        console.log("Response:", response.data);
+        toast.success("QR Code linked successfully!");
+        navigate(`/client/${QRId}`)
       }
-      navigate(`/client/${response.data.private_key}`)
-    } catch (error) {
-      console.error('Error verifying client:', error);
+    } catch (error: any) {
+      console.error("Error:", error);
+
+      if (error.response) {
+        if (error.response.status === 404) {
+          toast.error("Invalid QR Code.");
+        } else if (error.response.status === 400) {
+          toast.error(error.response.data.error || "Client ID and QR ID are required.");
+        } else {
+          toast.error(error.response.data.error || "Failed to link QR Code.");
+        }
+      } else {
+        toast.error("Network error, please try again.");
+      }
     }
   };
+
 
   return (
     <div className="pb-20 bg-gray-50 min-h-screen">
@@ -81,12 +126,22 @@ export const VerifyClient = () => {
                 <p><span className="font-medium">Phone:</span> {clientDetails.phone}</p>
                 <p><span className="font-medium">Image:</span> <img src={clientDetails.logo} alt="" /></p>
                 <p><span className="font-medium">Google API:</span> {clientDetails.googleAPI}</p>
+
+
+                <input
+                  type="text"
+                  value={QRId}
+                  onChange={(e) => setQRId(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter QR ID"
+                />
                 <button
-                  onClick={handleVerify}
+                  onClick={handleQRCode}
                   className="w-full bg-green-600 text-white p-3 rounded-lg font-semibold hover:bg-green-700 flex items-center justify-center gap-2"
                 >
+
                   <UserCheck size={20} />
-                  Verify Client
+                  Link QR
                 </button>
               </div>
             </div>

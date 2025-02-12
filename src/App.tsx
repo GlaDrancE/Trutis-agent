@@ -9,6 +9,7 @@ import { jwtDecode } from 'jwt-decode'
 import { useAuthStore } from './store/authStore';
 import { ShowQR } from './pages/ShowQR';
 import { QRCodeProvider } from './hooks/qrCodePrivateKey'
+import { Toaster } from 'react-hot-toast';
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem('token');
@@ -28,6 +29,7 @@ function App() {
   return (
     <Router>
       <QRCodeProvider>
+        <Toaster position="top-right" reverseOrder={false} />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route

@@ -16,7 +16,7 @@ export const ShowQR = () => {
                 <QRCodeCanvas value={`http://localhost:3000/${private_key}`} size={200} />
 
                 <div>
-                    <strong>Client Id: </strong> {private_key}
+                    <strong>Private Key: </strong> {private_key}
                 </div>
             </div>
             <BottomNav />
