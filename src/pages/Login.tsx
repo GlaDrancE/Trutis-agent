@@ -34,7 +34,9 @@ export const Login = () => {
         toast.error("Invalid Credentials")
         return;
       }
-      localStorage.setItem("token", response.data.token)
+
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("agentId", response.data.agent.id);
       navigate('/')
     } catch (error) {
       console.error(error)

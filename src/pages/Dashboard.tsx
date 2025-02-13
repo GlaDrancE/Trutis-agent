@@ -1,7 +1,13 @@
 import React from 'react';
 import { BottomNav } from '../components/BottomNav';
+import { LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { handleLogout } from '../utils/logout';
+
 
 export const Dashboard = () => {
+  const navigate = useNavigate();
+
   const payments = [
     { id: 1, client: 'John Doe', amount: 1000, date: '2024-03-15' },
     { id: 2, client: 'Jane Smith', amount: 1500, date: '2024-03-14' },
@@ -10,9 +16,17 @@ export const Dashboard = () => {
 
   return (
     <div className="pb-20 bg-gray-50 min-h-screen">
-      <div className="bg-blue-600 text-white p-6">
-        <h1 className="text-2xl font-bold">Welcome Back</h1>
-        <p className="text-blue-100">Your Payment Records</p>
+      <div className="bg-blue-600 text-white p-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Welcome Back</h1>
+          <p className="text-blue-100">Your Payment Records</p>
+        </div>
+        <button 
+          onClick={() => handleLogout(navigate)} 
+          className="text-white hover:text-gray-300 transition"
+        >
+          <LogOut size={24} />
+        </button>
       </div>
       
       <div className="p-4">
