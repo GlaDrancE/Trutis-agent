@@ -36,7 +36,7 @@ export const Login = () => {
       }
 
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("agentId", response.data.agent.id);
+      localStorage.setItem("agentId", response.data.agentId);
       navigate('/')
     } catch (error) {
       console.error(error)
