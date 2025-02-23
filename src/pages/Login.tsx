@@ -24,22 +24,25 @@ export const Login = () => {
       }
     }
   }
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-
-      const response = await loginAgent(email, password)
-      console.log(response)
-      if (response.status !== 200) {
-        toast.error("Invalid Credentials")
-        return;
+      const response = await loginAgent(email, password);
+      console.log(response);
+  
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("agentId", response.data.agentId);
+        navigate('/');
+      } else {
+        const errorMessage = response.data?.error || 'An unexpected error occurred';
+        toast.error(errorMessage);
       }
-
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("agentId", response.data.agentId);
-      navigate('/')
-    } catch (error) {
-      console.error(error)
+    } catch (error: any) {
+      console.error('Login error:', error);
+      const errorMessage = error.response?.data?.error || 'Something went wrong. Please try again.';
+      toast.error(errorMessage);
     }
   };
 
