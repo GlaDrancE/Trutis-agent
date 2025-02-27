@@ -8,6 +8,7 @@ import { LogOut } from 'lucide-react';
 export const ShowQR = () => {
     const { private_key } = useParams();
     const navigate = useNavigate();
+    const formBaseUrl = import.meta.env.VITE_FORM_BASE_URL;
 
     return (
         <div className='min-h-screen'>
@@ -22,7 +23,7 @@ export const ShowQR = () => {
             </div>
 
             <div className='flex flex-col items-center justify-center w-full h-full mt-16'>
-                <QRCodeCanvas value={`http://localhost:3000/${private_key}`} size={200} />
+                <QRCodeCanvas value={`${formBaseUrl}/client/${private_key}`} size={200} />
                 <div className="mt-4 text-lg">
                     <strong>Private Key: </strong> {private_key}
                 </div>
