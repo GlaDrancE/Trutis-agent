@@ -23,7 +23,7 @@ export const ShowQR = () => {
             </div>
 
             <div className='flex flex-col items-center justify-center w-full h-full mt-16'>
-                <QRCodeCanvas value={`${formBaseUrl}/client/${private_key}`} size={200} />
+                <QRCodeCanvas value={`${formBaseUrl}/${private_key}`} size={200} />
                 <div className="mt-4 text-lg">
                     <strong>Private Key: </strong> {private_key}
                 </div>
