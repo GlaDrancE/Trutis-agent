@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { BottomNav } from "../components/BottomNav";
-import { getAgentClients } from "../../../services/api";
+import { getAgentClients } from "../../services/api";
 import toast from "react-hot-toast";
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { handleLogout } from "../utils/logout"; 
+import { handleLogout } from "../utils/logout";
 
 interface Client {
   id: string;
@@ -22,7 +22,7 @@ export const Clients = () => {
   const [completedClients, setCompletedClients] = useState<AgentClient[]>([]);
   const [milestone, setMilestone] = useState({ current: 0, target: 20 });
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -57,8 +57,8 @@ export const Clients = () => {
 
       <div className="bg-blue-600 text-white p-6 shadow-md flex items-center justify-between">
         <h1 className="text-2xl font-bold">Clients & Milestones</h1>
-        <button 
-          onClick={() => handleLogout(navigate)} 
+        <button
+          onClick={() => handleLogout(navigate)}
           className="text-white hover:text-gray-300 transition"
         >
           <LogOut size={24} />

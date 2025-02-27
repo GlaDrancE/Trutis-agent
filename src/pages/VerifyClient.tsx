@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { LogOut, UserCheck } from 'lucide-react';
 import { BottomNav } from '../components/BottomNav';
-import { searchClient, linkQRCode } from '../../../services/api';
+import { searchClient, linkQRCode } from '../../services/api';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { handleLogout } from '../utils/logout';
 
 export const VerifyClient = () => {
-  const [clientId, setClientId] = useState('');
+  const [publicKey, setPublicKey] = useState('');
   const [QRId, setQRId] = useState('');
   const [clientDetails, setClientDetails] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -16,15 +16,15 @@ export const VerifyClient = () => {
 
   useEffect(() => {
     const public_key = searchParams.get('c');
-    setClientId(public_key as string);
+    setPublicKey(public_key as string);
   }, []);
 
   const handleSearch = async () => {
     setLoading(true);
-    navigate(`/verify?c=${clientId}`);
+    navigate(`/verify?c=${publicKey}`);
 
     try {
-      const response = await searchClient(clientId);
+      const response = await searchClient(publicKey);
       setClientDetails(response.data);
     } catch (error) {
       toast.error('Client not found');
@@ -46,7 +46,7 @@ export const VerifyClient = () => {
     }
 
     try {
-      const response = await linkQRCode(clientId, QRId, agentId);
+      const response = await linkQRCode(publicKey, QRId, agentId);
 
       if (response.status === 200) {
         toast.success('QR Code linked successfully!');
@@ -90,8 +90,8 @@ export const VerifyClient = () => {
             </label>
             <input
               type="text"
-              value={clientId}
-              onChange={(e) => setClientId(e.target.value)}
+              value={publicKey}
+              onChange={(e) => setPublicKey(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter client ID"
             />

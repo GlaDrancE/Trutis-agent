@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BottomNav } from "../components/BottomNav";
-import { getAgentProfile, updateAgentStatus } from "../../../services/api";
+import { getAgentProfile, updateAgentStatus } from "../../services/api";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { handleLogout } from "../utils/logout";

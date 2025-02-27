@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import { loginAgent } from '../../../services/api';
+import { loginAgent } from '../../services/api';
 import toast from 'react-hot-toast'
 import { jwtDecode } from 'jwt-decode';
 
