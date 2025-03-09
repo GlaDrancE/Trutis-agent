@@ -1,85 +1,19 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import { Login } from './pages/Login';
-import { Dashboard } from './pages/Dashboard';
-import { VerifyClient } from './pages/VerifyClient';
-import { Clients } from './pages/Clients';
-import { Profile } from './pages/Profile';
-import { jwtDecode } from 'jwt-decode'
-import { useAuthStore } from './store/authStore';
-import { ShowQR } from './pages/ShowQR';
-import { QRCodeProvider } from './hooks/qrCodePrivateKey'
-import { Toaster } from 'react-hot-toast';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
 
-const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  const token = localStorage.getItem('token');
-  const currentDate = Date.now() / 1000;
-  if (token) {
-    const decodeToken = jwtDecode(token);
-    if (decodeToken.exp && decodeToken.exp > currentDate) {
-      return <>
-        {children}
-      </>
-    }
-  }
-  return <Navigate to="/login" />;
-};
-
-function App() {
+const App: React.FC = () => {
   return (
     <Router>
-      <QRCodeProvider>
-        <Toaster position="top-right" reverseOrder={false} />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/verify"
-            element={
-              <PrivateRoute>
-                <VerifyClient />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/clients"
-            element={
-              <PrivateRoute>
-                <Clients />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/client/:private_key"
-            element={
-              <PrivateRoute>
-                <ShowQR />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <PrivateRoute>
-                <Profile />
-              </PrivateRoute>
-            }
-          />
-          <Route path="/" element={<Navigate to="/login" />} />
-        </Routes>
-      </QRCodeProvider>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/features" element={<div>Features Page</div>} />
+        <Route path="/pricing" element={<div>Pricing Page</div>} />
+      </Routes>
     </Router>
   );
-}
+};
 
 export default App;

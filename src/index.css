@@ -2,13 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.toggle-checkbox:checked {
-  right: 0;
-  border-color: #2563eb;
-}
-.toggle-checkbox:checked + .toggle-label {
-  background-color: #2563eb;
-}
-.toggle-label {
-  transition: background-color 0.2s ease-in;
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif; /* Set Poppins as the default font */
 }
