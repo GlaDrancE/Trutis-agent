@@ -2,12 +2,12 @@ import axios from "axios";
 import { Agent, Client } from "../types";
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL || 'http://localhost:3000/api',
+    baseURL: import.meta.env.VITE_BASE_URL || 'http://localhost:3000/api/v1/api',
 
 });
 
 const authApi = axios.create({
-    baseURL: import.meta.env.VITE_AUTH_URL || 'http://localhost:3000/auth'
+    baseURL: import.meta.env.VITE_AUTH_URL || 'http://localhost:3000/api/v1/auth'
 })
 
 
